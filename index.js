@@ -32,11 +32,17 @@ async function run() {
             res.json(result);
         });
 
-
         // get all orders 
         app.get("/orders", async (req, res) => {
             const email = req.query.email;
             let result = await orders_collection.find({}).toArray()
+            res.json(result);
+        });
+
+        // get all orders according to pd ids 
+        app.get("/get_orders_data", async (req, res) => {
+            const array = req.query.array;
+            let result = await products_collection.find({$in: array}).toArray()
             res.json(result);
         });
 
