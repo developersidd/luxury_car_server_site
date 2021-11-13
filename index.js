@@ -25,6 +25,18 @@ async function run() {
         const orders_collection = database.collection("orders_collection");
         const user_data = database.collection("user_data");
 
+
+                // add google user data to db
+                app.put("/add_user_data", async (req, res) => {
+                    const user = req.body;
+                    const filter = { email: user.email };
+                    const updateDoc = { $set: user };
+                    const options = {upsert: true};
+                    const result = await user_data.updateOne(filter, updateDoc, options);
+                    res.json(result);
+                });
+                
+
         // get slider data
         app.get("/slider_data", async (req, res) => {
             const result = await sliderData.find({}).toArray();
@@ -49,22 +61,12 @@ async function run() {
             const data = req.body;
             const result = await orders_collection.insertOne(data);
             res.json(result);
-        }); 1
+        }); 
 
         // add register user data to db
         app.post("/add_user_data", async (req, res) => {
             const data = req.body;
             const result = await user_data.insertOne(data);
-            res.json(result);
-        });
-
-        // add google user data to db
-        app.put("/add_user_data", async (req, res) => {
-            const user = req.body;
-            const filter = { email: user.email };
-            const updateDoc = { $set: user };
-            const options = {upsert: true};
-            const result = await user_data.updateOne(filter, updateDoc, options);
             res.json(result);
         });
     }
