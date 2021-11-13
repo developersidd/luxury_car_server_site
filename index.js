@@ -37,7 +37,7 @@ async function run() {
             res.json(result);
         });
 
-     
+
         // get a specific product data
         app.get("/:product_id", async (req, res) => {
             const id = req.params.product_id;
@@ -45,17 +45,15 @@ async function run() {
             res.json(result);
         });
 
-           // get all orders 
-           app.get("/user_orders", async (req, res) => {
-            let result = await orders_collection.find({}).toArray()
-            res.json(result);
-        });
-
-        // get orders of a specific user 
+        // get all orders 
         app.get("/user_orders", async (req, res) => {
             const email = req.query.email;
-            let result = await orders_collection.find({ email: email }).toArray()
-            res.json(result);
+            let result;
+            email ?
+                result = await orders_collection.find({ email: email }).toArray() :
+                result = await orders_collection.find({}).toArray()
+            console.log(result)
+                res.json(result);
         });
 
 
