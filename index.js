@@ -11,7 +11,7 @@ app.use(cors());
 
 1
 const { MongoClient } = require('mongodb');
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.minbj.mongodb.net/myFirstDatabase?r1etryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.minbj.mongodb.net/myFirstDatabase?r1etryWrites=false&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 
@@ -38,7 +38,6 @@ async function run() {
         });
 
      
-
         // get a specific product data
         app.get("/:product_id", async (req, res) => {
             const id = req.params.product_id;
