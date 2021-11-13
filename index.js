@@ -24,6 +24,7 @@ async function run() {
         const products_collection = database.collection("products_collection");
         const orders_collection = database.collection("orders_collection");
         const user_data = database.collection("user_data");
+        const review = database.collection("review");
 
 
         // get all the user info to check admin role
@@ -36,7 +37,7 @@ async function run() {
             }
             res.json({ admin: isAdmin });
         });
-
+1
 
         // get user orders 
         app.get("/user_orders/:email", async (req, res) => {
@@ -45,12 +46,20 @@ async function run() {
             res.json(result);
         });
 
+
         // get all orders 
         app.get("/orders", async (req, res) => {
             const email = req.query.email;
             let result = await orders_collection.find({}).toArray()
             res.json(result);
         });
+        
+        // get all review 
+        app.get("/get_review", async (req, res) => {
+            let result = await review.find({}).toArray();
+            res.json(result);
+        });
+
 
         // get slider data
         app.get("/slider_data", async (req, res) => {
@@ -83,6 +92,13 @@ async function run() {
         app.post("/add_user_data", async (req, res) => {
             const data = req.body;
             const result = await user_data.insertOne(data);
+            res.json(result);
+        });
+
+        // add a review data to db
+        app.post("/add_review", async (req, res) => {
+            const data = req.body;
+            const result = await review.insertOne(data);
             res.json(result);
         });
 
