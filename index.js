@@ -11,9 +11,9 @@ app.use(cors());
 
 1
 const { MongoClient } = require('mongodb');
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.minbj.mongodb.net/myFirstDatabase?r1etryWrites=false&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.minbj.mongodb.net/myFirstDatabase?
+robobalancedb?retryWrites=false`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
 
 async function run() {
 
@@ -42,6 +42,19 @@ async function run() {
         app.get("/:product_id", async (req, res) => {
             const id = req.params.product_id;
             const result = await products_collection.findOne({ _id: ObjectId(id) });
+            res.json(result);
+        });
+
+           // get all orders 
+           app.get("/user_orders", async (req, res) => {
+            let result = await orders_collection.find({}).toArray()
+            res.json(result);
+        });
+
+        // get orders of a specific user 
+        app.get("/user_orders", async (req, res) => {
+            const email = req.query.email;
+            let result = await orders_collection.find({ email: email }).toArray()
             res.json(result);
         });
 
@@ -91,7 +104,6 @@ async function run() {
             const result = await user_data.updateOne(filter, updateDoc);
             res.json(result);
         });
-
     }
 
     finally {
