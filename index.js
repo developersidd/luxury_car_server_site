@@ -25,6 +25,19 @@ async function run() {
         const orders_collection = database.collection("orders_collection");
         const user_data = database.collection("user_data");
 
+
+        // get all orders 
+        app.get("/orders", async (req, res) => {
+            const email = req.query.email;
+            let result = await orders_collection.find({}).toArray()
+            //if (email) {
+            //    result = await orders_collection.find({ email: email }).toArray();
+            //} else {
+            //}
+            console.log(result)
+            res.json(result);
+        });
+
         // get slider data
         app.get("/slider_data", async (req, res) => {
             const result = await sliderData.find({}).toArray();
@@ -44,19 +57,6 @@ async function run() {
             const result = await products_collection.findOne({ _id: ObjectId(id) });
             res.json(result);
         });
-
-        // get all orders 
-        app.get("/user_orders", async (req, res) => {
-            const email = req.query.email;
-            let result = await orders_collection.find({}).toArray()
-            //if (email) {
-            //    result = await orders_collection.find({ email: email }).toArray();
-            //} else {
-            //}
-            console.log(result)
-            res.json(result);
-        });
-
 
         // get all the user info to check admin role
         app.get("/test_email/:email", async (req, res) => {
