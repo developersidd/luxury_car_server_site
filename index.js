@@ -58,12 +58,15 @@ async function run() {
             res.json(result);
         });
 
-//        // add google user data to db
-//        app.put("/add_google_user_data", (req, res) => {
-//
-//        })
-
-
+        // add google user data to db
+        app.put("/add_user_data", async (req, res) => {
+            const user = req.body;
+            const filter = { email: user.email };
+            const updateDoc = { $set: user };
+            const options = {upsert: true};
+            const result = await user_data.updateOne(filter, updateDoc, options);
+            res.json(result);
+        });
     }
 
     finally {
