@@ -29,14 +29,19 @@ async function run() {
         // get all orders 
         app.get("/orders", async (req, res) => {
             const email = req.query.email;
-            let result;
-            if (email) {
-                result = await orders_collection.find({ email: email }).toArray();
-            } else {
-                result = await orders_collection.find({}).toArray()
-            }
+            let result = await orders_collection.find({}).toArray()
             res.json(result);
         });
+
+
+        // get user orders 
+        app.get("/user_orders/:email", async (req, res) => {
+            const email = req.params.email;
+            let result = await orders_collection.find({ email: email }).toArray();
+            res.json(result);
+        });
+
+
 
         // get slider data
         app.get("/slider_data", async (req, res) => {
