@@ -48,12 +48,13 @@ async function run() {
         // get all orders 
         app.get("/user_orders", async (req, res) => {
             const email = req.query.email;
-            let result;
-            email ?
-                result = await orders_collection.find({ email: email }).toArray() :
-                result = await orders_collection.find({}).toArray()
+            let result = await orders_collection.find({}).toArray()
+            //if (email) {
+            //    result = await orders_collection.find({ email: email }).toArray();
+            //} else {
+            //}
             console.log(result)
-                res.json(result);
+            res.json(result);
         });
 
 
