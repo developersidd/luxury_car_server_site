@@ -9,9 +9,9 @@ const port = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cors());
 
-
+1
 const { MongoClient } = require('mongodb');
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.minbj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.minbj.mongodb.net/myFirstDatabase?r1etryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 
@@ -37,6 +37,19 @@ async function run() {
             res.json(result);
         });
 
+        // get orders of a specific user 
+        app.get("/user_orders", async (req, res) => {
+            const email = req.query.email;
+            let result;
+            email ?
+                await orders_collection.find({ email: email }).toArray() :
+                await orders_collection.find({}).toArray()
+            res.json(result);
+        });
+
+
+
+
         // get a specific product data
         app.get("/:product_id", async (req, res) => {
             const id = req.params.product_id;
@@ -50,10 +63,10 @@ async function run() {
             const email = req.params.email;
             const result = await user_data.findOne({ email: email });
             let isAdmin = false;
-            if (result.role) {
+            if (result?.role === "admin") {
                 isAdmin = true;
             }
-            res.json({result, isAdmin});
+            res.json({ admin: isAdmin });
         });
 
 
