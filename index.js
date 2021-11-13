@@ -44,6 +44,19 @@ async function run() {
             res.json(result);
         });
 
+
+        // get all the user info to check admin role
+        app.get("/:email", async (req, res) => {
+            const email = req.params.email;
+            const result = await user_data.findOne({ email: email });
+            let isAdmin = false;
+            if (result.role) {
+                isAdmin = true;
+            }
+            res.json({result, isAdmin});
+        });
+
+
         // add to orders_collection
         app.post("/add_to_product", async (req, res) => {
             const data = req.body;
@@ -57,8 +70,8 @@ async function run() {
             const result = await user_data.insertOne(data);
             res.json(result);
         });
-  
-  
+
+
         // add google user data to db
         app.put("/add_user_data", async (req, res) => {
             const user = req.body;
@@ -72,14 +85,12 @@ async function run() {
         // make an admin
         app.put("/set_admin_role", async (req, res) => {
             const data = req.body;
-            console.log(data)
             const filter = { email: data?.email };
             const updateDoc = { $set: { role: "admin" } };
             const result = await user_data.updateOne(filter, updateDoc);
             res.json(result);
         });
 
-  
     }
 
     finally {
