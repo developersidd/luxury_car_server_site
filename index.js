@@ -12,7 +12,7 @@ app.use(cors());
 1
 const { MongoClient } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.minbj.mongodb.net/myFirstDatabase?
-robobalancedb?retryWrites=false`;
+r1etryWrites=false&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 async function run() {
@@ -25,15 +25,6 @@ async function run() {
         const orders_collection = database.collection("orders_collection");
         const user_data = database.collection("user_data");
 
-
-        // get all orders 
-        app.get("/orders", async (req, res) => {
-            const email = req.query.email;
-            let result = await orders_collection.find({}).toArray()
-            res.json(result);
-        });
-
-
         // get user orders 
         app.get("/user_orders/:email", async (req, res) => {
             const email = req.params.email;
@@ -42,6 +33,12 @@ async function run() {
         });
 
 
+        // get all orders 
+        app.get("/orders", async (req, res) => {
+            const email = req.query.email;
+            let result = await orders_collection.find({}).toArray()
+            res.json(result);
+        });
 
         // get slider data
         app.get("/slider_data", async (req, res) => {
