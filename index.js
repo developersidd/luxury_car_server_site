@@ -42,8 +42,8 @@ async function run() {
             const email = req.query.email;
             let result;
             email ?
-                await orders_collection.find({ email: email }).toArray() :
-                await orders_collection.find({}).toArray()
+                result = await orders_collection.find({ email: email }).toArray() :
+                result = await orders_collection.find({}).toArray()
             res.json(result);
         });
 
