@@ -51,7 +51,6 @@ async function run() {
         });
 
 
-
         // get a specific product data
         app.get("/:product_id", async (req, res) => {
             const id = req.params.product_id;
@@ -61,7 +60,7 @@ async function run() {
 
 
         // get all the user info to check admin role
-        app.get("/:email", async (req, res) => {
+        app.get("/test_email/:email", async (req, res) => {
             const email = req.params.email;
             const result = await user_data.findOne({ email: email });
             let isAdmin = false;
