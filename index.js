@@ -90,16 +90,15 @@ async function run() {
         // add a product to db
         app.post("/add_product_db", async (req, res) => {
             const data = req.body;
-
+            console.log("data",data);
+            console.log("file",req.files);
             const result = await products_collection.insertOne(data);
             res.json(result);
         });
         
         // add to orders_collection
-        app.post("/add_to_product", async (req, res) => {
+        app.post("/add_to_order", async (req, res) => {
             const data = req.body;
-            console.log(data);
-            console.log(req.files);
             const result = await orders_collection.insertOne(data);
             res.json(result);
         });
