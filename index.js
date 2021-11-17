@@ -27,13 +27,12 @@ async function run() {
         const review = database.collection("review");
 
 
-        
         // get all review 
         app.get("/get_review", async (req, res) => {
             let result = await review.find({}).toArray();
             res.json(result);
         });
-        
+
         // get all the user info to check admin role
         app.get("/test_email/:email", async (req, res) => {
             const email = req.params.email;
@@ -85,10 +84,19 @@ async function run() {
         // add a review data to db
         app.post("/add_review_db", async (req, res) => {
             const data = req.body;
-            console.log(data)
             const result = await review.insertOne(data);
             res.json(result);
         });
+        
+        // add a product to db
+        app.post("/add_product_db", async (req, res) => {
+            const data = req.body;
+            const result = await products_collection.insertOne(data);
+            res.json(result);
+        });
+        
+
+
         // add to orders_collection
         app.post("/add_to_product", async (req, res) => {
             const data = req.body;
