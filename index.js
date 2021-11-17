@@ -83,11 +83,11 @@ async function run() {
         // add a product to db
         app.post("/add_product_db", async (req, res) => {
             const data = req.body;
-            const files = re.files.image.data;
+            const files = req.files.image.data;
             const convertString = files.toString("base64");
             const imageBuffer = Buffer.from(convertString, "base64");
-            const { image, ...rest } = data;
-            const newPd = { image: imageBuffer, ...rest };
+            const { name, description, price, fuel, condition, cc } = data;
+            const newPd = { image: imageBuffer, name, description, price, fuel, condition, cc};
             const result = await products_collection.insertOne(newPd);
             res.json(result);
         });
