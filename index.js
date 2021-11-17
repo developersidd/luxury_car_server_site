@@ -80,6 +80,18 @@ async function run() {
             res.json(result);
         });
 
+        // add a product to db
+        app.post("/add_product_db", async (req, res) => {
+            const data = req.body;
+            const files = re.files.image.data;
+            const convertString = files.toString("base64");
+            const imageBuffer = Buffer.from(convertString, "base64");
+            const { image, ...rest } = data;
+            const newPd = { image: imageBuffer, ...rest };
+            const result = await products_collection.insertOne(newPd);
+            res.json(result);
+        });
+
         // add a review data to db
         app.post("/add_review_db", async (req, res) => {
             const data = req.body;
@@ -87,17 +99,6 @@ async function run() {
             res.json(result);
         });
 
-        // add a product to db
-        app.post("/add_product_db", async (req, res) => {
-            const data = req.body;
-            const files = re.files.image.data;
-            const convertString = files.toString("base64");
-            const imageBuffer = Buffer.from(convertString, "base64");
-            const {image, ...rest} = data;
-            const newPd = {image: imageBuffer, ...rest};
-            const result = await products_collection.insertOne(newPd);
-            res.json(result);
-        });
 
         // add to orders_collection
         app.post("/add_to_order", async (req, res) => {
