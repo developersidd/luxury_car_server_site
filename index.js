@@ -4,12 +4,13 @@ const cors = require("cors");
 require("dotenv").config();
 const ObjectId = require("mongodb").ObjectId;
 const port = process.env.PORT || 5000;
+const fileUpload = require("express-fileupload");
 
 // middleware
 app.use(express.json());
 app.use(cors());
+app.use(fileUpload());
 
-1
 const { MongoClient } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.minbj.mongodb.net/myFirstDatabase?
 r1etryWrites=false&w=majority`;
@@ -52,14 +53,12 @@ async function run() {
             res.json(result);
         });
 
-
         // get all orders 
         app.get("/orders", async (req, res) => {
             const email = req.query.email;
             let result = await orders_collection.find({}).toArray()
             res.json(result);
         });
-
 
         // get slider data
         app.get("/slider_data", async (req, res) => {
@@ -91,15 +90,16 @@ async function run() {
         // add a product to db
         app.post("/add_product_db", async (req, res) => {
             const data = req.body;
+
             const result = await products_collection.insertOne(data);
             res.json(result);
         });
         
-
-
         // add to orders_collection
         app.post("/add_to_product", async (req, res) => {
             const data = req.body;
+            console.log(data);
+            console.log(req.files);
             const result = await orders_collection.insertOne(data);
             res.json(result);
         });
