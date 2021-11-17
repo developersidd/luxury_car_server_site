@@ -94,7 +94,7 @@ async function run() {
             const convertString = files.toString("base64");
             const imageBuffer = Buffer.from(convertString, "base64");
             const {image, ...rest} = data;
-            const newPd = {imageBuffer, ...rest};
+            const newPd = {image: imageBuffer, ...rest};
             const result = await products_collection.insertOne(newPd);
             res.json(result);
         });
