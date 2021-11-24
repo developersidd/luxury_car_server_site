@@ -32,6 +32,7 @@ async function run() {
         app.get("/get_review", async (req, res) => {
             let result = await review.find({}).toArray();
             res.json(result);
+            console.log(result)
         });
 
         // get all the user info to check admin role
