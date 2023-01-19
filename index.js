@@ -25,11 +25,6 @@ app.use(fileUpload());
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.minbj.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-// Main Function
-//async function run() {
-
-//try {
-
 // connecting with MongoDB Database
 client.connect();
 const database = client.db("luxury_car");
@@ -88,6 +83,14 @@ app.get("/:product_id", async (req, res) => {
     res.json(result);
 });
 
+//delete a product
+app.delete("/:product_id", async (req, res) => {
+    const id = req.params.product_id;
+    const result = await products_collection.deleteOne({ _id: ObjectId(id) });
+    res.json(result);
+});
+
+
 // add a product to db
 app.post("/add_product_db", async (req, res) => {
     const data = req.body;
@@ -139,16 +142,6 @@ app.put("/set_admin_role", async (req, res) => {
     const result = await user_data.updateOne(filter, updateDoc);
     res.json(result);
 });
-//}
-/*
-    // try ends
-    finally {
-    }
-}
-//run ends
-run().catch((err) => console.log(err));
-*/
-
 
 // 404 Error Handler
 app.use((req, res, next) => {
