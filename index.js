@@ -42,7 +42,7 @@ async function run() {
         app.get("/", (req, res) => {
             res.send("Running Luxury Car");
         });
-        
+
         // get all review 
         app.get("/get_review", async (req, res) => {
             let result = await review.find({}).toArray();
@@ -142,30 +142,30 @@ async function run() {
             res.json(result);
         });
 
-    // 404 Error Handler
-    app.use((req, res, next) => {
-        const error = new Error("The requested page does not exist!");
-        error.status = 404;
-        res.status(error.status).json(error.message);
-    });
-    
-    //Default Error Handler
-    app.use((err, req, res, next) => {
-        if (res.headersSent) {
-            next(err);
-        };
-        res.status(err.status || 500).json(err.message || "There was an Error");
-    });
 
+        // 404 Error Handler
+        app.use((req, res, next) => {
+            const error = new Error("The requested page does not exist!");
+            error.status = 404;
+            res.status(error.status).json(error.message);
+        });
 
+        //Default Error Handler
+        app.use((err, req, res, next) => {
+            if (res.headersSent) {
+                next(err);
+            };
+            res.status(err.status || 500).json(err.message || "There was an Error");
+        });
 
     }
+    // try ends
 
     finally {
     }
+
 }
-
-
+//run ends
 
 run().catch((err) => console.log(err));
 
