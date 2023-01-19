@@ -137,25 +137,6 @@ async function run() {
             const result = await user_data.updateOne(filter, updateDoc);
             res.json(result);
         });
-
-
-        // 404 Error Handler
-        app.use((req, res, next) => {
-            const error = new Error("The requested page does not exist!");
-            error.status = 404;
-            res.status(error.status).json(error.message);
-        });
-
-        //Default Error Handler
-        app.use((err, req, res, next) => {
-            if (res.headersSent) {
-                next(err);
-            };
-            res.status(err.status || 500).json(err.message || "There was an Error");
-        });
-
-
-
     }
 
     finally {
@@ -164,11 +145,26 @@ async function run() {
 
 run().catch((err) => console.log(err));
 
-/*
 app.get("/", (req, res) => {
     res.send("Running Luxury Car");
 });
-*/
+
+// 404 Error Handler
+app.use((req, res, next) => {
+    const error = new Error("The requested page does not exist!");
+    error.status = 404;
+    res.status(error.status).json(error.message);
+});
+
+//Default Error Handler
+app.use((err, req, res, next) => {
+    if (res.headersSent) {
+        next(err);
+    };
+    res.status(err.status || 500).json(err.message || "There was an Error");
+});
+
+
 
 app.listen(port, () => {
     console.log("Running project at", port);
